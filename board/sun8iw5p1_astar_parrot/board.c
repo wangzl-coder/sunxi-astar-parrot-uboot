@@ -36,6 +36,8 @@
 #include <spl.h>
 #include <sy8106a.h>
 #include <asm/setup.h>
+#include "private_uboot.h"
+
 
 #if defined CONFIG_VIDEO_LCD_PANEL_I2C && !(defined CONFIG_SPL_BUILD)
 /* So that we can use pin names in Kconfig and sunxi_name_to_gpio() */
@@ -212,6 +214,10 @@ enum env_location env_get_location(enum env_operation op, int prio)
 int board_init(void)
 {
 	__maybe_unused int id_pfr1, ret, satapwr_pin, macpwr_pin;
+	//use variable to avoid discard since link status
+	
+	printf("just aim to quote uboot_hash_value of u-boot head %s \r\n",uboot_hash_value);
+	printf("just aim to quote uboot_spare_head of u-boot head %d \r\n",uboot_spare_head.boot_data.uart_port);
 
 	gd->bd->bi_boot_params = (PHYS_SDRAM_0 + 0x100);
 

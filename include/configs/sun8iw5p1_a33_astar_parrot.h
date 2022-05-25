@@ -9,12 +9,21 @@
 #define __CONFIG_H
 
 /*
- * A23 specific configuration
+ * A33 specific configuration
  */
 
 /*
  * Include common sunxi configuration where most the settings are
  */
 #include <configs/sunxi-common.h>
+
+#define CONFIG_MACH_SUN8IW5P1_A33
+
+#define UBOOT_VERSION "1.1.0"
+
+#define UBOOT_PLATFORM "1.0.0"
+
+
+
 
 #endif /* __CONFIG_H */
