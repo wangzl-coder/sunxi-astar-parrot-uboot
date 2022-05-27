@@ -17,7 +17,7 @@
  */
 #include <configs/sunxi-common.h>
 
-#define CONFIG_MACH_SUN8IW5P1_A33
+#define CONFIG_PLATFORM_SUN8IW5P1
 
 #define UBOOT_VERSION "1.1.0"
 

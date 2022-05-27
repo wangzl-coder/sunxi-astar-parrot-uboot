@@ -151,6 +151,11 @@ ifdef CONFIG_EFI_LOADER
 OBJCOPYFLAGS += -j .efi_runtime -j .efi_runtime_rel
 endif
 
+ifdef CONFIG_PLATFORM_SUN8IW5P1
+OBJCOPYFLAGS += -j .__spare_hash_head
+endif
+
+
 ifneq ($(CONFIG_IMX_CONFIG),)
 ifdef CONFIG_SPL
 ifndef CONFIG_SPL_BUILD

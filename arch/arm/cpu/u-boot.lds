@@ -35,28 +35,25 @@ SECTIONS
 	 */
 	/DISCARD/ : { *(.rel._secure*) }
 #endif
-#ifdef CONFIG_MACH_SUN8IW5P1_A33
+#ifdef CONFIG_PLATFORM_SUN8IW5P1
 	. = CONFIG_SYS_TEXT_BASE;
 #else
 	. = 0x00000000
 #endif
 	. = ALIGN(4);
 
-#ifdef CONFIG_MACH_SUN8IW5P1_A33	
-	.head :
+#ifdef CONFIG_PLATFORM_SUN8IW5P1	
+	.__spare_hash_head :
 	{
-		*(.__spare_head)
-	}
-	
-	.hash :
-	{
-		*(.__hash_val)
+		*(__image_copy_start)
+		SOCDIR/spare_head.o (.__hd_spared_tab)
+		SOCDIR/spare_head.o (.__hd_hash_val)
 	}
 #endif	
 
 	.text :
 	{
-		*(.__image_copy_start)
+		//*(.__image_copy_start)
 		*(.vectors)
 		CPUDIR/start.o (.text*)
 	}

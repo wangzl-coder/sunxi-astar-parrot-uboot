@@ -9,7 +9,10 @@ obj-y	+= timer.o
 
 obj-$(CONFIG_MACH_SUN6I)	+= tzpc.o
 obj-$(CONFIG_MACH_SUN8I_H3)	+= tzpc.o
-obj-$(CONFIG_MACH_SUN8I_A33) += spare_head.o
+
+#ifdef CONFIG_PLATFORM_SUN8IW5P1
+extra-y += spare_head.o
+#endif
 
 ifndef CONFIG_SPL_BUILD
 obj-$(CONFIG_ARMV7_PSCI)	+= psci.o

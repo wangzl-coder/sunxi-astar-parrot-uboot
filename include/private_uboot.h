@@ -72,10 +72,10 @@ typedef struct __spare_boot_head_t
 	struct spare_boot_data_head    boot_data;
 }spare_boot_head_t;
 
-#ifdef CONFIG_MACH_SUN8IW5P1_A33
+#ifdef CONFIG_PLATFORM_SUN8IW5P1
 
-extern char uboot_hash_value[64]; 
-extern spare_boot_head_t uboot_spare_head;
+extern char boot_hash_value[64]; 
+extern spare_boot_head_t spare_boot_head;
 
 #endif
 

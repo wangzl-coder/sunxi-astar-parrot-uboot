@@ -25,11 +25,11 @@
 #include <common.h>
 #include <private_uboot.h>
 
-char uboot_hash_value[64] __attribute__((__section__(".__hash_val")));
+char boot_hash_value[64] __attribute__((__section__(".__hd_hash_val"))) = {0};
 
-spare_boot_head_t uboot_spare_head __attribute__((__section__(".__spare_head"))) = {
+spare_boot_head_t spare_boot_head __attribute__((__section__(".__hd_spared_tab"))) = {
 	                                  {
-	      /* jump_instruction */          ( 0xEA000000 | ( ( ( sizeof( spare_boot_head_t )+sizeof(uboot_hash_value) + sizeof( int ) - 1 ) / sizeof( int ) -2 ) & 0x00FFFFFF ) ),
+	      /* jump_instruction */          ( 0xEA000000 | ( ( ( sizeof( spare_boot_head_t )+sizeof(boot_hash_value) + sizeof( int ) - 1 ) / sizeof( int ) -2 ) & 0x00FFFFFF ) ),
 							   		      UBOOT_MAGIC,
 							   		      STAMP_VALUE,
 							   		      ALIGN_SIZE,
