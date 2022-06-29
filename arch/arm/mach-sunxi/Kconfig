@@ -522,6 +522,7 @@ config SYS_CLK_FREQ
 	default 888000000 if MACH_SUN50I_H6
 
 config SYS_CONFIG_NAME
+	string ""
 	default "sun4i" if MACH_SUN4I
 	default "sun5i" if MACH_SUN5I
 	default "sun6i" if MACH_SUN6I
@@ -532,6 +533,7 @@ config SYS_CONFIG_NAME
 	default "sun50i" if MACH_SUN50I_H6
 
 config SYS_BOARD
+	string ""
 	default "sunxi"
 
 config SYS_SOC
