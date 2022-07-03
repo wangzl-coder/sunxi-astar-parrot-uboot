@@ -53,10 +53,11 @@
 
 	aliases {
 		serial0 = &uart0;
+		serial3 = &uart3;
 	};
 
 	chosen {
-		stdout-path = "serial0:115200n8";
+		stdout-path = "serial3:115200n8";
 	};
 
 	leds {
@@ -224,5 +225,18 @@
 	usb0_id_det-gpios = <&pio 1 3 GPIO_ACTIVE_HIGH>; /* PB3 */
 	usb0_vbus_power-supply = <&usb_power_supply>;
 	usb0_vbus-supply = <&reg_drivevbus>;
+	status = "okay";
+};
+
+&pio {
+	uart3_pins_b: uart3@1 {
+		pins = "PH6", "PH7";
+		function = "uart3";
+	};
+};
+
+&uart3 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&uart3_pins_b>;
 	status = "okay";
 };
