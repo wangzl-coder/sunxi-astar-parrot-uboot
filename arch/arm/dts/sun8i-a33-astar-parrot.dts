@@ -48,8 +48,8 @@
 #include <dt-bindings/input/input.h>
 
 / {
-	model = "Olimex A33-OLinuXino";
-	compatible = "olimex,a33-olinuxino","allwinner,sun8i-a33";
+	model = "Rervision A33-Vstar-B";
+	compatible = "ervision,A33-Vstar-B","allwinner,sun8i-a33";
 
 	aliases {
 		serial0 = &uart0;
@@ -89,6 +89,23 @@
 	bus-width = <4>;
 	cd-gpios = <&pio 1 4 GPIO_ACTIVE_LOW>; /* PB4 */
 	status = "okay";
+};
+
+&mmc2 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&mmc2_8bit_pins>;
+	vmmc-supply = <&reg_dcdc1>;
+	bus-width = <8>;
+	non-removable;
+	cap-mmc-hw-reset;
+	status = "okay";
+};
+
+&mmc2_8bit_pins {
+	/* Increase drive strength for DDR modes */
+	drive-strength = <40>;
+	/* eMMC is missing pull-ups */
+	bias-pull-up;
 };
 
 &ohci0 {

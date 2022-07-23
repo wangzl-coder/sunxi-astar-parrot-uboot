@@ -339,6 +339,7 @@ static const struct sunxi_gpio_soc_data soc_data_l_3 = {
 	{ .compatible = _compat_, .data = (ulong)&soc_data_##_soc_data_ }
 
 static const struct udevice_id sunxi_gpio_ids[] = {
+	/*
 	ID("allwinner,sun4i-a10-pinctrl",	a_all),
 	ID("allwinner,sun5i-a10s-pinctrl",	a_all),
 	ID("allwinner,sun5i-a13-pinctrl",	a_all),
@@ -359,7 +360,7 @@ static const struct udevice_id sunxi_gpio_ids[] = {
 	ID("allwinner,sun8i-a83t-r-pinctrl",	l_1),
 	ID("allwinner,sun8i-h3-r-pinctrl",	l_1),
 	ID("allwinner,sun9i-a80-r-pinctrl",	l_3),
-	ID("allwinner,sun50i-a64-r-pinctrl",	l_1),
+	ID("allwinner,sun50i-a64-r-pinctrl",	l_1),*/
 	{ }
 };
 

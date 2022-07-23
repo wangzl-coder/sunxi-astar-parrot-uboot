@@ -319,5 +319,6 @@ source "drivers/pinctrl/exynos/Kconfig"
 source "drivers/pinctrl/mscc/Kconfig"
 source "drivers/pinctrl/mvebu/Kconfig"
 source "drivers/pinctrl/broadcom/Kconfig"
+source "drivers/pinctrl/sunxi/Kconfig"
 
 endmenu

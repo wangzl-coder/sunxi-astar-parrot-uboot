@@ -1,0 +1,9 @@
+config PINCTRL_SUNXI
+    bool
+
+config PINCTRL_SUN8I_A33
+    bool "sun8i_a33 pinctrl driver"
+    depends on MACH_SUN8I_A33 && PINCTRL
+    select PINCTRL_SUNXI
+    help
+     Say Y here to enable the sun8i_a33 pinctrl driver.
