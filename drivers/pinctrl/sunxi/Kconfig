@@ -6,4 +6,4 @@ config PINCTRL_SUN8I_A33
     depends on MACH_SUN8I_A33 && PINCTRL
     select PINCTRL_SUNXI
     help
-     Say Y here to enable the sun8i_a33 pinctrl driver.
+     Say Y here to  the sun8i_a33 pinctrl driver.enable
