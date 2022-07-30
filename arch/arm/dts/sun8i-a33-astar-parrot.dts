@@ -52,12 +52,12 @@
 	compatible = "ervision,A33-Vstar-B","allwinner,sun8i-a33";
 
 	aliases {
-		serial0 = &uart0;
-		serial3 = &uart3;
+		//serial0 = &uart0;
+		serial0 = &uart3;
 	};
 
 	chosen {
-		stdout-path = "serial3:115200n8";
+		stdout-path = "serial0:115200n8";
 	};
 
 	leds {
@@ -223,11 +223,13 @@
 	status = "okay";
 };
 
+/*
 &uart0 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&uart0_pins_b>;
 	status = "okay";
 };
+*/
 
 &usb_otg {
 	dr_mode = "otg";
@@ -247,7 +249,7 @@
 
 &pio {
 	uart3_pins_b: uart3@1 {
-		pins = "PH6", "PH7";
+		pins = "PH6","PH7";
 		function = "uart3";
 	};
 };
