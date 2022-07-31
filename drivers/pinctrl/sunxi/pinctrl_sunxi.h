@@ -26,9 +26,11 @@
 
 #define SUNXI_PINS_BANK_DESC(arry_desc)    \
 {       \
-    .pinctrl_bank_desc =(const struct sunxi_pinctrl_desc *) &arry_desc,   \
+    .pinctrl_bank_desc =(struct sunxi_pinctrl_desc *) &arry_desc,   \
     .pins_bank_num = sizeof(arry_desc)/sizeof(struct sunxi_pinctrl_desc)     \
 }
+
+
 
 enum sunxi_iomux_reg_val{
 
@@ -72,6 +74,9 @@ struct sunxi_pins_mux{
 
 struct sunxi_pinctrl_desc{
     char *pin_name;
+    u32 n_pin;
+    u32 pull_cfg;
+    u32 multi_drv;
     struct sunxi_pins_mux *pin_mux;
 };
 
@@ -79,7 +84,7 @@ struct sunxi_pinctrl_desc{
 extern const struct pinctrl_ops sunxi_pinctrl_ops;
 
 struct sunxi_pins_bank{
-    const struct sunxi_pinctrl_desc *pinctrl_bank_desc;
+    struct sunxi_pinctrl_desc *pinctrl_bank_desc;
 	unsigned int pins_bank_num;
 };
 

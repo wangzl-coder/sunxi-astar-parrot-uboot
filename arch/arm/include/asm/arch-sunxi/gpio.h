@@ -224,6 +224,13 @@ enum sunxi_gpio_number {
 #define SUNXI_GPIO_PULL_UP	1
 #define SUNXI_GPIO_PULL_DOWN	2
 
+
+#define SUNXI_PINCTRL_10_MA	0
+#define SUNXI_PINCTRL_20_MA	1
+#define SUNXI_PINCTRL_30_MA	2
+#define SUNXI_PINCTRL_40_MA	3
+
+
 /* Virtual AXP0 GPIOs */
 #define SUNXI_GPIO_AXP0_PREFIX "AXP0-"
 #define SUNXI_GPIO_AXP0_VBUS_DETECT	4
