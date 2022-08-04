@@ -1,7 +1,7 @@
 #ifndef PINCTRL_SUNXI_H
 #define PINCTRL_SUNXI_H
 #include <dm/pinctrl.h>
-
+#include <asm/arch/gpio.h>
 
 //#define ENABLE_SUNXI_PINCTRL_DEBUG
 
@@ -30,7 +30,11 @@
     .pins_bank_num = sizeof(arry_desc)/sizeof(struct sunxi_pinctrl_desc)     \
 }
 
+#define ID(_compat_, _soc_data_) \
+	{ .compatible = _compat_, .data = (ulong)&soc_data_##_soc_data_ }
 
+
+#define SUNXI_GPIOS_PER_BANK	SUNXI_GPIO_A_NR
 
 enum sunxi_iomux_reg_val{
 
@@ -65,7 +69,54 @@ enum sunxi_iomux_reg_val{
     
 };
 
+extern int gpio_sunxi_bind(struct udevice *parent);
 
+static const struct sunxi_gpio_soc_data soc_data_a_all = {
+	.start = 0,
+	.no_banks = SUNXI_GPIO_BANKS,
+};
+
+static const struct sunxi_gpio_soc_data soc_data_l_1 = {
+	.start = 'L' - 'A',
+	.no_banks = 1,
+};
+
+static const struct sunxi_gpio_soc_data soc_data_l_2 = {
+	.start = 'L' - 'A',
+	.no_banks = 2,
+};
+
+static const struct sunxi_gpio_soc_data soc_data_l_3 = {
+	.start = 'L' - 'A',
+	.no_banks = 3,
+};
+/*
+static const struct udevice_id sunxi_pinctrl_ids[] = {
+	ID("allwinner,sun4i-a10-pinctrl",	a_all),
+	ID("allwinner,sun5i-a10s-pinctrl",	a_all),
+	ID("allwinner,sun5i-a13-pinctrl",	a_all),
+	ID("allwinner,sun50i-h5-pinctrl",	a_all),
+	ID("allwinner,sun6i-a31-pinctrl",	a_all),
+	ID("allwinner,sun6i-a31s-pinctrl",	a_all),
+	ID("allwinner,sun7i-a20-pinctrl",	a_all),
+	ID("allwinner,sun8i-a23-pinctrl",	a_all),
+	ID("allwinner,sun8i-a33-pinctrl",	a_all),
+	ID("allwinner,sun8i-a83t-pinctrl",	a_all),
+	ID("allwinner,sun8i-h3-pinctrl",	a_all),
+	ID("allwinner,sun8i-r40-pinctrl",	a_all),
+	ID("allwinner,sun8i-v3s-pinctrl",	a_all),
+	ID("allwinner,sun9i-a80-pinctrl",	a_all),
+	ID("allwinner,sun50i-a64-pinctrl",	a_all),
+	ID("allwinner,sun6i-a31-r-pinctrl",	l_2),
+	ID("allwinner,sun8i-a23-r-pinctrl",	l_1),
+	ID("allwinner,sun8i-a83t-r-pinctrl",	l_1),
+	ID("allwinner,sun8i-h3-r-pinctrl",	l_1),
+	ID("allwinner,sun9i-a80-r-pinctrl",	l_3),
+	ID("allwinner,sun50i-a64-r-pinctrl",	l_1),
+	{ }
+};*/
+
+extern const struct driver gpio_sunxi;
 
 struct sunxi_pins_mux{
     char *pin_func;

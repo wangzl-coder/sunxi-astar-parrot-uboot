@@ -3,6 +3,9 @@
 #include <dm/pinctrl.h>
 #include "pinctrl_sunxi.h"
 #include <asm/gpio.h>
+#include <dm/device-internal.h>
+
+
 
 #ifdef CONFIG_SUNXI_PINCTRL_FULL
 static int pinctrl_sunxi_set_state(struct udevice *dev, struct udevice *config)
@@ -13,6 +16,67 @@ static int pinctrl_sunxi_set_state(struct udevice *dev, struct udevice *config)
     return 0;
 }
 #else
+
+/**
+ * Returns the name of a GPIO bank
+ *
+ * GPIO banks are named A, B, C, ...
+ *
+ * @bank:	Bank number (0, 1..n-1)
+ * @return allocated string containing the name
+ */
+static char *gpio_bank_name(int bank)
+{
+	char *name;
+
+	name = malloc(3);
+	if (name) {
+		name[0] = 'P';
+		name[1] = 'A' + bank;
+		name[2] = '\0';
+	}
+
+	return name;
+}
+
+/**
+ * We have a top-level GPIO device with no actual GPIOs. It has a child
+ * device for each Sunxi bank.
+ */
+int gpio_sunxi_bind(struct udevice *parent)
+{
+	struct sunxi_gpio_soc_data *soc_data =
+		(struct sunxi_gpio_soc_data *)dev_get_driver_data(parent);
+	struct sunxi_gpio_platdata *plat = parent->platdata;
+	struct sunxi_gpio_reg *ctlr;
+	int bank, ret;
+
+	/* If this is a child device, there is nothing to do here */
+	if (plat)
+		return 0;
+
+	ctlr = (struct sunxi_gpio_reg *)devfdt_get_addr(parent);
+	for (bank = 0; bank < soc_data->no_banks; bank++) {
+		struct sunxi_gpio_platdata *plat;
+		struct udevice *dev;
+
+		plat = calloc(1, sizeof(*plat));
+		if (!plat)
+			return -ENOMEM;
+		plat->regs = &ctlr->gpio_bank[bank];
+		plat->bank_name = gpio_bank_name(soc_data->start + bank);
+		plat->gpio_count = SUNXI_GPIOS_PER_BANK;
+
+		ret = device_bind(parent, &gpio_sunxi,
+					plat->bank_name, plat, -1, &dev);
+		if (ret)
+			return ret;
+		dev_set_of_offset(dev, dev_of_offset(parent));
+	}
+
+	return 0;
+}
+
 
 static int sunxi_get_pins_by_name(const char *pin_name, unsigned int *bank, unsigned int *bank_pins)
 {
@@ -168,7 +232,7 @@ static int pinctrl_sunxi_set_state_simple(struct udevice *dev, struct udevice *p
 			}
 
 			priv->pins_bank[bank].pinctrl_bank_desc[bank_pins].n_pin = bank*32 + bank_pins;
-			if(ret = fdtdec_get_bool(fdt, offset, "bias-pull-up")){
+			if(fdtdec_get_bool(fdt, offset, "bias-pull-up")){
 				priv->pins_bank[bank].pinctrl_bank_desc[bank_pins].pull_cfg = SUNXI_GPIO_PULL_UP;
 			}
 			else if(fdtdec_get_bool(fdt, offset, "bias-pull-down"))

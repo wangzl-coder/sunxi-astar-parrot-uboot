@@ -541,10 +541,9 @@ static int pinctrl_sun8i_a33_probe(struct udevice *dev)
     return 0;
 }
 
-
 static const struct udevice_id sun8i_a33_pinctrl_ids[] = {
-    {   .compatible = "allwinner,sun8i-a33-pinctrl" ,},
-    { /* sentinel */ }
+	ID("allwinner,sun8i-a33-pinctrl",	a_all),
+	{ }
 };
 
 U_BOOT_DRIVER(sun8i_a33_pinctrl) = {
@@ -552,6 +551,7 @@ U_BOOT_DRIVER(sun8i_a33_pinctrl) = {
     .id = UCLASS_PINCTRL,
     .of_match = sun8i_a33_pinctrl_ids,
     .priv_auto_alloc_size = sizeof(struct pinctrl_sunxi_priv),
+	.bind = gpio_sunxi_bind,
     .probe = pinctrl_sun8i_a33_probe,
     .ops = &sunxi_pinctrl_ops,
 };
