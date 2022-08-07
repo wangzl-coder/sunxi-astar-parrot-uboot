@@ -543,6 +543,7 @@ static int pinctrl_sun8i_a33_probe(struct udevice *dev)
 
 static const struct udevice_id sun8i_a33_pinctrl_ids[] = {
 	ID("allwinner,sun8i-a33-pinctrl",	a_all),
+	ID("allwinner,sun8i-a23-r-pinctrl",	l_1),
 	{ }
 };
 
