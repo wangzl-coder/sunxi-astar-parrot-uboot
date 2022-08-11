@@ -68,6 +68,10 @@
 			gpios = <&pio 1 7 GPIO_ACTIVE_HIGH>;
 		};
 	};
+
+	ethernet_rtl8152{
+		local-mac-address = [d2 fa 79 61 d6 ea];
+	};
 };
 
 &codec {

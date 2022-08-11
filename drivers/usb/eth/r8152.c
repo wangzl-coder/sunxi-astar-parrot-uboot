@@ -1587,21 +1587,39 @@ static int r8152_eth_probe(struct udevice *dev)
 	int ret;
 
 	tp->udev = udev;
-	r8152_read_mac(tp, pdata->enetaddr);
 
 	r8152b_get_version(tp);
 
+	printf("\r\n	ethernet device %s found , version val %d \r\n",dev->name, tp->version);
 	ret = rtl_ops_init(tp);
 	if (ret)
 		return ret;
 
 	tp->rtl_ops.init(tp);
 	tp->rtl_ops.up(tp);
-
+	
 	rtl8152_set_speed(tp, AUTONEG_ENABLE,
 			  tp->supports_gmii ? SPEED_1000 : SPEED_100,
 			  DUPLEX_FULL);
+	r8152_read_mac(tp, pdata->enetaddr);
+	if(!is_valid_ethaddr((const u8*)pdata->enetaddr)){
+		ofnode r8152_node = ofnode_path("/ethernet_rtl8152");
+		const uint8_t *addr = NULL;
+		if(!ofnode_valid(r8152_node)){
+			printf("r8152 warning : invalid node of r8152 ethaddr!! \r\n");
+			goto usb_eth_reg;
+		}
+		addr = ofnode_read_u8_array_ptr(r8152_node, "local-mac-address", ETH_ALEN);
+		if(!addr || !is_valid_ethaddr(addr)){
+			printf("r8152 warning : invalid value of r8152 ethaddr \r\n");
+			goto usb_eth_reg;
+		}
+		memcpy(pdata->enetaddr, addr, ETH_ALEN);
+		r8152_write_hwaddr(dev);
+		printf("r8152 set ethaddr %pM success \r\n", pdata->enetaddr);
+	}
 
+usb_eth_reg:
 	return usb_ether_register(dev, ueth, RTL8152_AGG_BUF_SZ);
 }
 
