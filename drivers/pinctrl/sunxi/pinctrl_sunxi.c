@@ -181,6 +181,8 @@ static int pinctrl_sunxi_set_state_simple(struct udevice *dev, struct udevice *p
 	u32 bank;
 	u32 bank_pins;
 	int multi_drv = 0;
+    struct sunxi_pins_bank *curr_bank = NULL;
+    struct sunxi_pinctrl_desc *curr_pinsdesc = NULL;
 
 	SUNXI_PINCTRL_DEBUG("set state simple dev->name is %s , periph->name is %s \r\n",
 				dev->name, periph->name);
@@ -230,15 +232,17 @@ static int pinctrl_sunxi_set_state_simple(struct udevice *dev, struct udevice *p
 				printf("sunxi pinctrl : get pins %s error \r\n",pins_name);
 				return -EINVAL;
 			}
-
-			priv->pins_bank[bank].pinctrl_bank_desc[bank_pins].n_pin = bank*32 + bank_pins;
+            
+            curr_bank = priv->pins_bank + bank;
+            curr_pinsdesc = curr_bank + bank_pins;
+			curr_pinsdesc->n_pin = bank*32 + bank_pins;
 			if(fdtdec_get_bool(fdt, offset, "bias-pull-up")){
-				priv->pins_bank[bank].pinctrl_bank_desc[bank_pins].pull_cfg = SUNXI_GPIO_PULL_UP;
+				curr_pinsdesc->pull_cfg = SUNXI_GPIO_PULL_UP;
 			}
 			else if(fdtdec_get_bool(fdt, offset, "bias-pull-down"))
-				priv->pins_bank[bank].pinctrl_bank_desc[bank_pins].pull_cfg = SUNXI_GPIO_PULL_DOWN;
+				curr_pinsdesc->pull_cfg = SUNXI_GPIO_PULL_DOWN;
 			else if(fdtdec_get_bool(fdt, offset, "bias-disable"))
-				priv->pins_bank[bank].pinctrl_bank_desc[bank_pins].pull_cfg = SUNXI_GPIO_PULL_DISABLE;
+				curr_pinsdesc->pull_cfg = SUNXI_GPIO_PULL_DISABLE;
 
 			multi_drv = fdt_getprop_u32_default_node(fdt, offset, 0,
 						     "drive-strength", 0);
@@ -253,9 +257,8 @@ static int pinctrl_sunxi_set_state_simple(struct udevice *dev, struct udevice *p
 					multi_drv = SUNXI_PINCTRL_40_MA;
 			}
 
-			priv->pins_bank[bank].pinctrl_bank_desc[bank_pins].multi_drv = multi_drv;
-			ret = pinctrl_sunxi_pins_cfg(pins_name, function, 
-							priv->pins_bank[bank].pinctrl_bank_desc[bank_pins]);
+			curr_pinsdesc->multi_drv = multi_drv;
+			ret = pinctrl_sunxi_pins_cfg(pins_name, function, *curr_pinsdesc);
 			if(ret == -EINVAL)
 				break;
 			
